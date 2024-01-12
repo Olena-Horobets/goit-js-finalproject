@@ -21,9 +21,7 @@ const renderGallery = () => {
 list.innerHTML = renderGallery();
 
 new SimpleLightbox(".gallery a", {
-	captions: true,
 	captionsData: "alt",
-	captionPosition: "bottom",
 	captionDelay: 250,
 	overlayOpacity: 0.85,
 });

@@ -21,19 +21,31 @@ const renderGallery = () => {
 const galleryItemClickHandler = (e) => {
 	e.preventDefault();
 
-	if (e.target === e.currentTarget) return;
+	if (e.target.nodeName !== "IMG") {
+		return;
+	}
 
-	const img = e.target.closest("[href]");
-	const instance = basicLightbox.create(`
-	    <img src="${img}" width="800" height="600">
-	`);
+	const img = e.target.dataset.source;
 	const close = (e) => {
-		if (e.key === "Escape") instance.close();
-		document.removeEventListener("keydown", close);
+		if (e.key === "Escape") {
+			instance.close();
+		}
 	};
+	const instance = basicLightbox.create(
+		`
+	    <img src="${img}" width="800" height="600">
+	`,
+		{
+			onShow: (instance) => {
+				document.addEventListener("keydown", close);
+			},
+			onClose: (instance) => {
+				document.removeEventListener("keydown", close);
+			},
+		}
+	);
 
 	instance.show();
-	document.addEventListener("keydown", close);
 };
 
 list.innerHTML = renderGallery();
